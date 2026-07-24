@@ -30,7 +30,7 @@ const Shorten = () => {
 
             if (res.ok) {
                 // Generates the final link using your environment variable
-                const host = process.env.NEXT_PUBLIC_HOST || "http://localhost:3000";
+                const host = process.env.NEXT_PUBLIC_HOST || "https://bitlinks-ten-mu.vercel.app/";
                 setgenerated(`${host}/${shorturl}`);
                 
                 // Clear inputs
