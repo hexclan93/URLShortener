@@ -1,22 +1,44 @@
-import clientPromise from "@/lib/mongodb"
+import clientPromise from "@/lib/mongodb";
 
 export async function POST(request) {
+  try {
+    const body = await request.json();
 
-    const body = await request.json() 
     const client = await clientPromise;
-    const db = client.db("bitlinks")
-    const collection = db.collection("url")
+    const db = client.db("bitlinks");
+    const collection = db.collection("url");
 
-    // Check if the short url exists
-    const doc = await collection.findOne({shorturl: body.shorturl})
-    if(doc){
-        return Response.json({success: false, error: true,  message: 'URL already exists!' })
+    const doc = await collection.findOne({
+      shorturl: body.shorturl,
+    });
+
+    if (doc) {
+      return Response.json({
+        success: false,
+        message: "URL already exists",
+      });
     }
 
-    const result = await collection.insertOne({
-        url: body.url,
-        shorturl: body.shorturl
-    })
+    await collection.insertOne({
+      url: body.url,
+      shorturl: body.shorturl,
+    });
 
-    return Response.json({success: true, error: false,  message: 'URL Generated Successfully' })
+    return Response.json({
+      success: true,
+      message: "Generated Successfully",
+    });
+  } catch (err) {
+    console.error(err);
+
+    return Response.json(
+      {
+        success: false,
+        error: err.message,
+      },
+      {
+        status: 500,
+      }
+    );
   }
+}
