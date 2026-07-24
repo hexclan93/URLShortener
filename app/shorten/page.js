@@ -15,7 +15,7 @@ const Shorten = () => {
         }
 
         try {
-            const res = await fetch("/app/api/generate", {
+            const res = await fetch("/api/generate", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
